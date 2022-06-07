@@ -1,0 +1,36 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "/"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Build the Docker image
+        run: |
+          docker-compose build mern-api mern-react   
+          
+      - name: Docker List Images # For tracking only, make sure they're up.
+        run: |
+          docker image ls
+  
+  api-test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run test command
+        run: |
+          npm run test:report
+      # run result parser
+          python ./tests/results/resultsParser.py > $REPORT_RESULT
+      

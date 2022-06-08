@@ -24,11 +24,12 @@ jobs:
   
   api-test:
     runs-on: ubuntu-latest
-    needs: build
+    # needs: build
     steps:
       - uses: actions/checkout@v2
 
       - name: Run test command
+        working-directory: ./server
         run: |
           npm test
 

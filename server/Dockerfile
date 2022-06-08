@@ -6,19 +6,27 @@ RUN apk add --update nodejs
 RUN apk add --update npm
 
 # Create directory for API
-WORKDIR /usr/mern-server
+WORKDIR /usr/src/app
 
-# Get environment variable file as argument
-ARG env
-
-# Copy file to container 
-# COPY $env config.env
-
-# Copy other files to container
-COPY ./ ./
+# Copy package.json over
+COPY package.json ./
 
 # Install node_modules
-RUN npm ci
+RUN npm install
+
+# Copy other files to container, current dir (project) to current dir (container)
+COPY . .
+
+# # Get environment variables as argument
+ARG env
+# ARG ATLAS_URI=""
+# ARG PORT
+
+# # Copy variable file
+COPY $env ./config.env
+# ENV ATLAS_URI=${ATLAS_URI}
+# ENV PORT=${PORT}
+
 
 #Start API service
 CMD [ "npm start" ]

@@ -27,6 +27,10 @@ jobs:
     # needs: build
     steps:
       - uses: actions/checkout@v2
+      - name: Install jq (json parser)
+        working-directory: ./server
+        run: |
+          sudo apt-get install jq
 
       - name: Run test command
         working-directory: ./server
@@ -34,8 +38,9 @@ jobs:
           npm install
           npm test --json > testResults
       
-      - name: grep test result
+      - name: sed line with json -> pipe to jq for success boolean
         working-directory: ./server
         run: |
-          grep --line-number success testResults
+          echo "All tests successful:"
+          sed -n 5p testResults | jq '.success'
 

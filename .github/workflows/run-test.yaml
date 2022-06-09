@@ -41,17 +41,20 @@ jobs:
         working-directory: ./server
         run: |
           npm test --json > testResults
+
+      - name: save file
+        uses: actions/download-artifact@v1
+        with:
+          name: testResults
       
-      - name: sed line with json -> pipe to jq for success boolean
-        id: get_result
-        working-directory: ./server
-        run: |
-          result=$(sed -n 5p testResults | jq .success)
-          echo "::set-output name=success::$(echo $result)"
+      # - name: sed line with json -> pipe to jq for success boolean
+      #   id: get_result
+      #   working-directory: ./server
+      #   run: |
+      #     echo "::set-output name=success::$(sed -n 5p testResults | jq '.success')"
           
-      - name: Only pass if success is true
-        working-directory: ./server
-        run: |
-          if [[ ${{ steps.get_result.outputs.success }} == true ]]; then exit 0; else exit 1; fi
+      # - name: Only pass if success is true
+      #   run: |
+      #     if [[ ${{ steps.get_result.outputs.success }} == true ]]; then exit 0; else exit 1; fi
           
 

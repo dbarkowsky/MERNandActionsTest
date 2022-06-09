@@ -30,5 +30,9 @@ jobs:
 
       - name: Run test command
         run: |
-          npm test
+          npm test --json > testResults
+      
+      - name: grep test result
+        run: |
+          grep --line-number success testResults
 

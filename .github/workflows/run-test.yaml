@@ -32,5 +32,10 @@ jobs:
         working-directory: ./server
         run: |
           npm install
-          npm test
+          npm test --json > testResults
+      
+      - name: grep test result
+        working-directory: ./server
+        run: |
+          grep --line-number success testResults
 

@@ -45,7 +45,7 @@ jobs:
       - name: save file
         uses: actions/download-artifact@v1
         with:
-          name: testResults
+          name: ./server/testResults
       
       # - name: sed line with json -> pipe to jq for success boolean
       #   id: get_result

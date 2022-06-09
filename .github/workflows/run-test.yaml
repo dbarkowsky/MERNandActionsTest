@@ -43,6 +43,7 @@ jobs:
 
       - name: Run test command
         working-directory: ./server
+        continue-on-error: true
         run: |
           npm test -- --json > testResults
           

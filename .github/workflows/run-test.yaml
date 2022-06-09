@@ -45,7 +45,7 @@ jobs:
       - name: sed line with json -> pipe to jq for success boolean
         working-directory: ./server
         run: |
-          success=(sed -n 5p testResults | jq '.success')
+          success=$(sed -n 5p testResults | jq '.success')
           echo "All tests passed: $success"
           
 

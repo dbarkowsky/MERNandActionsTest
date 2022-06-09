@@ -43,7 +43,7 @@ jobs:
 
       - name: Run test command
         run: |
-          cd ./server
+          cd /home/runner/work/MERNandActionsTest/MERNandActionsTest/server
           npm test --json > testResults
 
       - name: save file

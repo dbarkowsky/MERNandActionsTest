@@ -46,7 +46,7 @@ jobs:
         id: get_result
         working-directory: ./server
         run: |
-          echo "::set-output name=success::$((sed -n 5p testResults | jq '.success'))"
+          echo ::set-output name=success::$(sed -n 5p testResults | jq '.success')
           
       - name: Only pass if success is true
         working-directory: ./server

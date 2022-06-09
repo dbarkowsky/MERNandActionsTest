@@ -45,6 +45,7 @@ jobs:
         run: |
           cd /home/runner/work/MERNandActionsTest/MERNandActionsTest/server
           npm test --json > testResults
+          ls -al
 
       - name: save file
         uses: actions/download-artifact@v1

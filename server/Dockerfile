@@ -17,7 +17,7 @@ RUN npm install
 # Copy other files to container, current dir (project) to current dir (container)
 COPY . .
 
-# # Get environment variables as argument
+# Get environment variables as argument
 ARG env
 # ARG ATLAS_URI=""
 # ARG PORT

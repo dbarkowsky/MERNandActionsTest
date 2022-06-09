@@ -24,15 +24,18 @@ jobs:
   
   api-test:
     runs-on: ubuntu-latest
-    needs: build
+    # needs: build
     steps:
       - uses: actions/checkout@v2
 
       - name: Run test command
+        working-directory: ./server
         run: |
+          npm install
           npm test --json > testResults
       
       - name: grep test result
+        working-directory: ./server
         run: |
           grep --line-number success testResults
 

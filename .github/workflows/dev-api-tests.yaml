@@ -2,15 +2,15 @@ name: Run HWP Tests
 
 on:
   pull_request:
-    branches: [main]
-    paths:
-      - "/"
+    types: 
+      - opened
+    branches: 
+      - main
   workflow_dispatch:
 
 jobs: 
   api-endpoints:
     runs-on: ubuntu-latest
-    # needs: build
     steps:
       - uses: actions/checkout@v2
           
@@ -21,7 +21,7 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date '+%F_%T')"
+        run: echo "::set-output name=date::$(date '+%Y%m%d%H%M%S')"
 
       - name: Run test command
         working-directory: ./server

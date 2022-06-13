@@ -23,10 +23,12 @@ ARG env
 # ARG PORT
 
 # # Copy variable file
-COPY $env ./config.env
+COPY $env .
 # ENV ATLAS_URI=${ATLAS_URI}
 # ENV PORT=${PORT}
 
+EXPOSE 5000
+
 
 #Start API service
-CMD [ "npm start" ]
+CMD [ "npm", "start" ]

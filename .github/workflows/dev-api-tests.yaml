@@ -1,4 +1,4 @@
-name: Run HWP Tests
+name: Run HWP API Tests
 
 on:
   pull_request:

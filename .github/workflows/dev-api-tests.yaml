@@ -1,0 +1,45 @@
+name: Run HWP Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "/"
+  workflow_dispatch:
+
+jobs: 
+  api-endpoints:
+    runs-on: ubuntu-latest
+    # needs: build
+    steps:
+      - uses: actions/checkout@v2
+          
+      - name: Install dependencies
+        working-directory: ./server
+        run: |
+          npm install
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date '+%F_%T')"
+
+      - name: Run test command
+        working-directory: ./server
+        continue-on-error: true
+        run: |
+          npm test -- --json > tempResults
+
+      - name: Build file path
+        id: results
+        run: echo "::set-output name=results::apiTestResults_${{ steps.date.outputs.date }}_${{ github.event.pull_request.head.ref }}.json"
+
+      - name: sed line with json -> pipe to jq for success boolean
+        working-directory: ./server
+        run: |
+          echo $(sed -n 5p tempResults)" > ${{ steps.results.outputs.results }}
+          
+      - name: Save file as artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: api-test-results
+          path: ./server/${{ steps.results.outputs.results }}

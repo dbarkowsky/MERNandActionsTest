@@ -6,16 +6,18 @@ RUN apk add --update nodejs
 RUN apk add --update npm
 
 # Create directory for API
-WORKDIR /usr/src/app
+WORKDIR /usr/src/server
 
 # Copy package.json over
-COPY package.json ./
-
-# Install node_modules
-RUN npm install
+COPY package*.json ./
 
 # Copy other files to container, current dir (project) to current dir (container)
 COPY . .
+
+# Install node_modules
+RUN npm ci
+
+
 
 # Get environment variables as argument
 ARG env
@@ -23,10 +25,11 @@ ARG env
 # ARG PORT
 
 # # Copy variable file
-COPY $env ./config.env
+COPY $env .
 # ENV ATLAS_URI=${ATLAS_URI}
 # ENV PORT=${PORT}
 
+EXPOSE 5000
 
 #Start API service
-CMD [ "npm start" ]
+CMD [ "npm", "run", "start" ]

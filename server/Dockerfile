@@ -31,5 +31,6 @@ COPY $env .
 
 EXPOSE 5000
 
+
 #Start API service
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]

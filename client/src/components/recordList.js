@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { WarningBar } from './WarningBar';
  
 const Record = (props) => (
  <tr>
@@ -21,9 +22,10 @@ const Record = (props) => (
  
 export default function RecordList() {
  const [records, setRecords] = useState([]);
+ const quantity = useRef(0);
  
  // This method fetches the records from the database.
- useEffect(() => {
+ useMemo(() => {
    async function getRecords() {
      const response = await fetch(`http://localhost:5000/record/`);
  
@@ -35,6 +37,9 @@ export default function RecordList() {
  
      const records = await response.json();
      setRecords(records);
+    //  setQuantity(records.length)
+     quantity.current = records.length;
+     console.log(quantity);
    }
  
    getRecords();
@@ -50,6 +55,7 @@ export default function RecordList() {
  
    const newRecords = records.filter((el) => el._id !== id);
    setRecords(newRecords);
+   quantity.current = records.length;
  }
  
  // This method will map out the records on the table
@@ -80,6 +86,7 @@ export default function RecordList() {
        </thead>
        <tbody>{recordList()}</tbody>
      </table>
+     <WarningBar quantity={quantity}/>
    </div>
  );
 }

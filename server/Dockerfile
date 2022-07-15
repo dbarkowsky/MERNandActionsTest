@@ -4,18 +4,21 @@ FROM node:17.9.1-alpine3.15
 # Install/Update Node
 RUN apk add --update nodejs
 RUN apk add --update npm
+RUN npm install nodemon -g
 
 # Create directory for API
-WORKDIR /usr/src/app
+WORKDIR /usr/src/server
 
 # Copy package.json over
-COPY package.json ./
-
-# Install node_modules
-RUN npm install
+COPY package*.json ./
 
 # Copy other files to container, current dir (project) to current dir (container)
 COPY . .
+
+# Install node_modules
+RUN npm ci
+
+
 
 # Get environment variables as argument
 ARG env

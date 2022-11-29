@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { WarningBar } from './WarningBar';
  
-const Record = (props) => (
+// A single record entry
+const Record = ({record, deleteRecord}) => (
  <tr>
-   <td>{props.record.name}</td>
-   <td>{props.record.position}</td>
-   <td>{props.record.level}</td>
+   <td>{record.name}</td>
+   <td><a href={record.url}>{record.url}</a></td>
    <td>
-     <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
+     <Link className="btn btn-link" to={`/edit/${record._id}`}>Edit</Link> |
      <button className="btn btn-link"
        onClick={() => {
-         props.deleteRecord(props.record._id);
+         deleteRecord(record._id);
        }}
      >
        Delete
@@ -20,11 +19,12 @@ const Record = (props) => (
  </tr>
 );
  
+// The whole record table
 export default function RecordList() {
  const [records, setRecords] = useState([]);
  const quantity = useRef(0);
  
- // This method fetches the records from the database.
+ // Get data from server, assign state
  useMemo(() => {
    async function getRecords() {
      const response = await fetch(`http://localhost:5000/record/`);
@@ -47,7 +47,7 @@ export default function RecordList() {
    return;
  }, [records.length]);
  
- // This method will delete a record
+ // Delete a record
  async function deleteRecord(id) {
    await fetch(`http://localhost:5000/${id}`, {
      method: "DELETE"
@@ -58,7 +58,7 @@ export default function RecordList() {
    quantity.current = records.length;
  }
  
- // This method will map out the records on the table
+ // A list of records to put in the table.
  function recordList() {
    return records.map((record) => {
      return (
@@ -71,22 +71,19 @@ export default function RecordList() {
    });
  }
  
- // This following section will display the table with the records of individuals.
+ // The table where records are displayed.
  return (
    <div>
-     <h3>Record List</h3>
-     <table className="table table-striped" style={{ marginTop: 20 }}>
+     <table className="table table-striped mx-3" style={{ marginTop: 20 }}>
        <thead>
          <tr>
            <th>Name</th>
-           <th>Position</th>
-           <th>Level</th>
+           <th>URL</th>
            <th>Action</th>
          </tr>
        </thead>
        <tbody>{recordList()}</tbody>
      </table>
-     <WarningBar quantity={quantity}/>
    </div>
  );
 }
